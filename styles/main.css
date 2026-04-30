@@ -1,0 +1,157 @@
+/* --- Global Reset & Typography --- */
+* {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+:root {
+    --bg-dark: #0a0a0c;
+    --accent-blue: #007BFF;
+    --text-main: #ffffff;
+    --text-muted: #a0a0a0;
+    --glass-bg: rgba(255, 255, 255, 0.03);
+    --glass-border: rgba(255, 255, 255, 0.1);
+}
+
+body {
+    background-color: var(--bg-dark);
+    color: var(--text-main);
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    line-height: 1.6;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* --- Bento Grid Layout --- */
+.bento-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-template-rows: auto auto;
+    gap: 24px;
+    width: 95%;
+    max-width: 1100px;
+    padding: 40px 20px;
+}
+
+/* --- Base Card Styles --- */
+.card {
+    background: var(--glass-bg);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid var(--glass-border);
+    border-radius: 28px;
+    padding: 32px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    transition: transform 0.3s ease, border-color 0.3s ease;
+}
+
+.card:hover {
+    border-color: rgba(0, 123, 255, 0.4);
+}
+
+.full-width {
+    grid-column: span 2;
+}
+
+/* --- Card Headers & Metadata --- */
+.card-meta {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+}
+
+.badge {
+    background: rgba(255, 255, 255, 0.07);
+    padding: 6px 14px;
+    border-radius: 100px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    color: var(--text-muted);
+}
+
+.card-content h2 {
+    font-size: 1.75rem;
+    margin-bottom: 12px;
+    font-weight: 700;
+}
+
+.card-content p {
+    color: var(--text-muted);
+    font-size: 1rem;
+    margin-bottom: 24px;
+}
+
+/* --- Timeline Component --- */
+.timeline {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    position: relative;
+    padding-top: 20px;
+}
+
+.timeline::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 2px;
+}
+
+.timeline .item {
+    position: relative;
+    flex: 1;
+    text-align: left;
+    font-size: 0.85rem;
+    color: var(--text-muted);
+}
+
+.timeline .item span {
+    display: block;
+    font-weight: bold;
+    color: var(--text-main);
+    margin-bottom: 8px;
+}
+
+.timeline .item.done::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: 0;
+    width: 100%;
+    height: 4px;
+    background: var(--accent-blue);
+    z-index: 1;
+}
+
+.timeline .item.active {
+    color: #ffcc00;
+    /* Highlighting Counting Day */
+}
+
+/* --- Utility Classes --- */
+.primary {
+    background: var(--accent-blue) !important;
+    border: none !important;
+}
+
+@media (max-width: 768px) {
+    .bento-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .full-width {
+        grid-column: span 1;
+    }
+}

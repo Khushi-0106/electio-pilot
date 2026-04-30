@@ -1,0 +1,115 @@
+:root {
+    --bg: #0a0a0c;
+    --glass: rgba(255, 255, 255, 0.03);
+    --border: rgba(255, 255, 255, 0.1);
+    --primary: #007BFF;
+}
+
+body {
+    background: radial-gradient(circle at top right, #11111d, #050508);
+    color: white;
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+}
+
+.bento-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    width: 900px;
+}
+
+.glass {
+    background: var(--glass);
+    backdrop-filter: blur(20px);
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    padding: 30px;
+}
+
+.full-width {
+    grid-column: span 2;
+}
+
+/* Buttons & Interactive Elements */
+.action-btn {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid var(--border);
+    color: #fff;
+    padding: 12px 20px;
+    border-radius: 14px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.action-btn:hover {
+    background: var(--primary);
+    transform: translateY(-2px);
+    box-shadow: 0 10px 20px rgba(0, 123, 255, 0.2);
+}
+
+/* Chat Overlays */
+.chat-glass {
+    position: fixed;
+    bottom: 30px;
+    right: 30px;
+    width: 380px;
+    height: 520px;
+    background: rgba(20, 20, 30, 0.95);
+    backdrop-filter: blur(30px);
+    border: 1px solid var(--border);
+    border-radius: 28px;
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+}
+
+.hidden {
+    display: none;
+}
+
+#chat-display {
+    flex: 1;
+    padding: 20px;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.user-msg {
+    align-self: flex-end;
+    background: linear-gradient(135deg, #007BFF, #0056b3);
+    padding: 12px 18px;
+    border-radius: 20px 20px 4px 20px;
+    max-width: 80%;
+}
+
+.bot-msg {
+    align-self: flex-start;
+    background: rgba(255, 255, 255, 0.08);
+    padding: 12px 18px;
+    border-radius: 20px 20px 20px 4px;
+    max-width: 80%;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.chat-input-area {
+    padding: 15px;
+    display: flex;
+    gap: 10px;
+    border-top: 1px solid var(--border);
+}
+
+.chat-input-area input {
+    flex: 1;
+    background: #222;
+    border: none;
+    color: #fff;
+    border-radius: 8px;
+    padding: 10px;
+}
