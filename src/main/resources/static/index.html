@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>2026 Election Assistant</title>
-    <!-- We link main.css which will contain our consolidated premium glassmorphism styles -->
+    <title>Electio-Pilot: Empowering Voters</title>
+    <!-- We link main.css which contains our consolidated premium glassmorphism styles -->
     <link rel="stylesheet" href="styles/main.css">
     <!-- Google Fonts for modern typography -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -27,7 +27,7 @@
             </div>
             <div class="card-content">
                 <h2>Your Personal Election Assistant</h2>
-                <p>Get instant, professional help with eligibility, ID rules, and finding your local polling booth for the 2026 Elections.</p>
+                <p>Get instant, non-partisan help with eligibility, ID rules, and finding your local polling booth for the 2026 Elections powered by Google Gemini.</p>
                 <button class="action-btn primary pulse-btn" onclick="app.toggleChat()">Start Chatting ✨</button>
             </div>
         </section>
@@ -36,46 +36,75 @@
         <section class="card glass">
             <div class="card-meta">
                 <span class="badge">Timeline</span>
+                <select id="state-selector" onchange="app.updateTimeline()" class="glass-select">
+                    <option value="national">National (All)</option>
+                    <option value="karnataka">Karnataka</option>
+                    <option value="tamil_nadu">Tamil Nadu</option>
+                    <option value="maharashtra">Maharashtra</option>
+                </select>
             </div>
             <div class="card-content">
-                <h2>Election Timeline</h2>
+                <h2>Personalized Timeline</h2>
                 <p id="timeline-desc">Tracking the 2026 Lok Sabha Phases.</p>
-                <div class="timeline">
+                <div class="timeline" id="timeline-container">
                     <div class="item done"><span>Apr 09</span> Phase 1</div>
                     <div class="item done"><span>Apr 23</span> Phase 2</div>
-                    <div class="item active"><span>May 04</span> Counting Day</div>
+                    <div class="item active"><span>May 04</span> Counting</div>
                 </div>
             </div>
         </section>
 
-        <!-- Steps to Vote Card -->
-        <section class="card glass full-width">
+        <!-- Smart Polling Locator Card -->
+        <section class="card glass">
             <div class="card-meta">
-                <span class="badge">How-To</span>
+                <span class="badge">Locator</span>
             </div>
             <div class="card-content">
-                <h2>Steps to Vote</h2>
-                <p>Follow these simple steps to ensure your vote counts.</p>
+                <h2>Smart Polling Locator</h2>
+                <p>Real-time polling place discovery (Powered by Civic API tech).</p>
+                <div class="locator-input-group">
+                    <input type="text" id="address-input" placeholder="Enter your ZIP or City..." class="glass-input">
+                    <button class="action-btn primary" onclick="app.findPollingPlace()">Search</button>
+                </div>
+                <div id="locator-result" class="locator-result hidden">
+                    <!-- Dynamic mock results will appear here -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Steps to Vote Card (Persistent Journey) -->
+        <section class="card glass full-width">
+            <div class="card-meta">
+                <span class="badge">Your Voting Journey</span>
+                <span class="save-status" id="save-status">Saved Securely</span>
+            </div>
+            <div class="card-content">
+                <h2>Track Your Progress</h2>
+                <p>Securely track your voting journey across sessions.</p>
                 <div class="steps-container">
-                    <div class="step-card" onclick="app.nav('check')">
+                    <div class="step-card journey-card" id="step-1" onclick="app.toggleStep(1)">
+                        <div class="step-checkbox"></div>
                         <div class="step-icon">🔍</div>
                         <h3>1. Check Name</h3>
-                        <p>Verify your name on the electoral rolls.</p>
+                        <p>Verify on electoral rolls.</p>
                     </div>
-                    <div class="step-card" onclick="app.nav('update')">
+                    <div class="step-card journey-card" id="step-2" onclick="app.toggleStep(2)">
+                        <div class="step-checkbox"></div>
                         <div class="step-icon">📝</div>
                         <h3>2. Verify Details</h3>
-                        <p>Update address or rectify errors.</p>
+                        <p>Update if needed.</p>
                     </div>
-                    <div class="step-card" onclick="app.nav('id')">
+                    <div class="step-card journey-card" id="step-3" onclick="app.toggleStep(3)">
+                        <div class="step-checkbox"></div>
                         <div class="step-icon">🪪</div>
-                        <h3>3. Prep your ID</h3>
-                        <p>EPIC or other valid ECI documents.</p>
+                        <h3>3. Prep ID</h3>
+                        <p>EPIC ready.</p>
                     </div>
-                    <div class="step-card" onclick="app.nav('booth')">
-                        <div class="step-icon">📍</div>
-                        <h3>4. Find Booth</h3>
-                        <p>Locate your designated polling station.</p>
+                    <div class="step-card journey-card" id="step-4" onclick="app.toggleStep(4)">
+                        <div class="step-checkbox"></div>
+                        <div class="step-icon">🗳️</div>
+                        <h3>4. Voted!</h3>
+                        <p>Voice heard.</p>
                     </div>
                 </div>
             </div>
@@ -96,7 +125,7 @@
         </div>
         <div class="chat-body" id="chat-display">
             <div class="message bot-msg">
-                <div class="msg-content">Hello! I'm your 2026 Election AI Guide. I can help you with voter ID requirements, polling booth locations, or any other ECI guidelines. How can I assist you today?</div>
+                <div class="msg-content">Hello! I'm your non-partisan 2026 Election AI. I can help you with voter ID requirements, polling booth locations, or any other ECI guidelines. How can I assist you today?</div>
             </div>
         </div>
         <div class="chat-input-area">

@@ -9,6 +9,7 @@
     --glass-border: rgba(255, 255, 255, 0.08);
     --bot-msg-bg: rgba(255, 255, 255, 0.1);
     --user-msg-bg: linear-gradient(135deg, #2563eb, #1d4ed8);
+    --success-green: #10b981;
 }
 
 * {
@@ -99,10 +100,10 @@ body {
 /* --- Bento Grid Layout --- */
 .bento-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr);
+    grid-template-columns: repeat(3, 1fr);
     gap: 24px;
     width: 95%;
-    max-width: 1200px;
+    max-width: 1300px;
     padding: 20px;
 }
 
@@ -128,7 +129,7 @@ body {
 }
 
 .full-width {
-    grid-column: span 2;
+    grid-column: span 3;
 }
 
 /* --- Card Content --- */
@@ -157,8 +158,8 @@ body {
 }
 
 .card-content h2 {
-    font-size: 2rem;
-    margin-bottom: 16px;
+    font-size: 1.8rem;
+    margin-bottom: 12px;
     font-weight: 700;
     letter-spacing: -0.5px;
     line-height: 1.2;
@@ -166,15 +167,71 @@ body {
 
 .card-content p {
     color: var(--text-muted);
-    font-size: 1.1rem;
-    margin-bottom: 32px;
+    font-size: 1rem;
+    margin-bottom: 24px;
 }
+
+/* --- Inputs and Selects --- */
+.glass-select, .glass-input {
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--glass-border);
+    color: var(--text-main);
+    padding: 8px 16px;
+    border-radius: 12px;
+    font-family: 'Inter', sans-serif;
+    font-size: 0.9rem;
+    outline: none;
+    transition: border-color 0.3s;
+}
+
+.glass-select option {
+    background: var(--bg-dark);
+}
+
+.glass-select:focus, .glass-input:focus {
+    border-color: var(--accent-blue);
+}
+
+/* Locator Card specific */
+.locator-input-group {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+}
+.locator-input-group .glass-input {
+    flex: 1;
+}
+
+.locator-result {
+    margin-top: 10px;
+    padding: 16px;
+    background: rgba(37, 99, 235, 0.1);
+    border: 1px solid rgba(37, 99, 235, 0.3);
+    border-radius: 12px;
+    animation: fadeIn 0.4s ease;
+}
+
+.locator-result h4 {
+    color: #60a5fa;
+    margin-bottom: 4px;
+}
+
+.locator-result p {
+    margin-bottom: 0;
+    font-size: 0.9rem;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(5px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 
 /* --- Buttons --- */
 .action-btn {
-    padding: 14px 28px;
+    padding: 12px 24px;
     border-radius: 12px;
-    font-size: 1rem;
+    font-size: 0.95rem;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -232,7 +289,7 @@ body {
     font-weight: 700;
     color: var(--text-main);
     margin-bottom: 4px;
-    font-size: 1.1rem;
+    font-size: 1rem;
 }
 
 .timeline .item.done::before {
@@ -263,14 +320,26 @@ body {
     z-index: 1;
 }
 
-/* --- Steps to Vote Component --- */
+/* --- Steps to Vote Component (Journey) --- */
+.save-status {
+    font-size: 0.8rem;
+    color: var(--success-green);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    opacity: 0.8;
+}
+.save-status::before {
+    content: '☁️';
+}
+
 .steps-container {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     gap: 16px;
 }
 
-.step-card {
+.journey-card {
     background: rgba(255, 255, 255, 0.03);
     border: 1px solid var(--glass-border);
     border-radius: 16px;
@@ -278,32 +347,73 @@ body {
     text-align: center;
     cursor: pointer;
     transition: all 0.3s ease;
+    position: relative;
 }
 
-.step-card:hover {
+.journey-card:hover {
     background: rgba(255, 255, 255, 0.08);
     transform: translateY(-4px);
     border-color: rgba(255, 255, 255, 0.2);
 }
+
+.step-checkbox {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+    width: 20px;
+    height: 20px;
+    border: 2px solid var(--glass-border);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.journey-card.completed {
+    background: rgba(16, 185, 129, 0.1);
+    border-color: rgba(16, 185, 129, 0.3);
+}
+
+.journey-card.completed .step-checkbox {
+    background: var(--success-green);
+    border-color: var(--success-green);
+    position: relative;
+}
+.journey-card.completed .step-checkbox::after {
+    content: '✓';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+}
+.journey-card.completed .step-checkbox {
+    position: absolute; /* Revert position for the checkmark to stay right */
+}
+
 
 .step-icon {
     font-size: 2rem;
     margin-bottom: 12px;
 }
 
-.step-card h3 {
+.journey-card h3 {
     font-size: 1.1rem;
     margin-bottom: 8px;
     font-weight: 600;
 }
 
-.step-card p {
+.journey-card p {
     font-size: 0.85rem;
     color: var(--text-muted);
     margin-bottom: 0;
 }
 
 /* --- Premium Chat Overlay --- */
+.hidden {
+    display: none !important;
+}
+
 .chat-glass {
     position: fixed;
     bottom: 30px;
@@ -324,12 +434,7 @@ body {
     transform-origin: bottom right;
 }
 
-.chat-glass.hidden {
-    opacity: 0;
-    transform: scale(0.8);
-    pointer-events: none;
-}
-
+/* ... keep chat specific styles ... */
 .chat-header {
     padding: 20px;
     border-bottom: 1px solid var(--glass-border);
@@ -436,7 +541,6 @@ body {
     box-shadow: 0 4px 12px rgba(37, 99, 235, 0.3);
 }
 
-/* Typing Indicator */
 .typing-indicator {
     display: flex;
     gap: 4px;
