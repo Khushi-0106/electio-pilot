@@ -1,21 +1,20 @@
-/* --- Hyper-Minimalist SaaS Theme --- */
 :root {
-    --bg-base: #000000;
-    --bg-surface: #0a0a0a;
-    --bg-card: #111111;
-    --border-dim: #222222;
-    --border-hover: #333333;
+    --bg-base: #001B48;
+    --bg-surface: #00457A;
+    --bg-card: rgba(0, 69, 122, 0.4);
+    --border-dim: rgba(151, 202, 219, 0.2);
+    --border-hover: rgba(151, 202, 219, 0.5);
     
-    --text-primary: #ffffff;
-    --text-secondary: #888888;
+    --text-primary: #D6E8EE;
+    --text-secondary: #97CADB;
     
-    --accent: #e2e8f0;
-    --accent-hover: #ffffff;
-    --accent-blue: #0070f3; /* Vercel Blue */
+    --accent: #0084BE;
+    --accent-hover: #97CADB;
+    --accent-blue: #0084BE;
     --success: #17c964;
     
-    --radius-sm: 6px;
-    --radius-md: 12px;
+    --radius-sm: 8px;
+    --radius-md: 16px;
     --radius-lg: 24px;
 }
 
