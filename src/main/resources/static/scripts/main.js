@@ -12,28 +12,28 @@ const app = {
         if (state === 'national') {
             desc.innerText = "Tracking the 2026 Lok Sabha Phases.";
             html = `
-                <div class="item done"><span>Apr 09</span> Phase 1</div>
-                <div class="item done"><span>Apr 23</span> Phase 2</div>
-                <div class="item active"><span>May 04</span> Counting</div>
+                <div class="v-item done"><div class="v-dot"></div><div class="v-content"><h4>Apr 09</h4><p>Phase 1</p></div></div>
+                <div class="v-item done"><div class="v-dot"></div><div class="v-content"><h4>Apr 23</h4><p>Phase 2</p></div></div>
+                <div class="v-item active"><div class="v-dot"></div><div class="v-content"><h4>May 04</h4><p>Counting</p></div></div>
             `;
         } else if (state === 'karnataka') {
             desc.innerText = "Karnataka Election Schedule.";
             html = `
-                <div class="item done"><span>Apr 09</span> Voting Day</div>
-                <div class="item active"><span>May 04</span> Results</div>
+                <div class="v-item done"><div class="v-dot"></div><div class="v-content"><h4>Apr 09</h4><p>Voting Day</p></div></div>
+                <div class="v-item active"><div class="v-dot"></div><div class="v-content"><h4>May 04</h4><p>Results</p></div></div>
             `;
         } else if (state === 'tamil_nadu') {
             desc.innerText = "Tamil Nadu Election Schedule.";
             html = `
-                <div class="item done"><span>Apr 23</span> Voting Day</div>
-                <div class="item active"><span>May 04</span> Results</div>
+                <div class="v-item done"><div class="v-dot"></div><div class="v-content"><h4>Apr 23</h4><p>Voting Day</p></div></div>
+                <div class="v-item active"><div class="v-dot"></div><div class="v-content"><h4>May 04</h4><p>Results</p></div></div>
             `;
         } else if (state === 'maharashtra') {
             desc.innerText = "Maharashtra Election Schedule.";
             html = `
-                <div class="item done"><span>Apr 09</span> Phase 1</div>
-                <div class="item done"><span>Apr 23</span> Phase 2</div>
-                <div class="item active"><span>May 04</span> Results</div>
+                <div class="v-item done"><div class="v-dot"></div><div class="v-content"><h4>Apr 09</h4><p>Phase 1</p></div></div>
+                <div class="v-item done"><div class="v-dot"></div><div class="v-content"><h4>Apr 23</h4><p>Phase 2</p></div></div>
+                <div class="v-item active"><div class="v-dot"></div><div class="v-content"><h4>May 04</h4><p>Results</p></div></div>
             `;
         }
         
