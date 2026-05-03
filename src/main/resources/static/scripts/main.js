@@ -1,181 +1,47 @@
-const app = {
-    apiUrl: '/api/chat',
-    
-    // --- 1. Personalized Timelines ---
-    updateTimeline() {
-        const state = document.getElementById('state-selector').value;
-        const container = document.getElementById('timeline-container');
-        
-        let html = '';
-        if (state === 'national') {
-            html = `
-                <div class="t-item done"><div class="t-date">APR 09</div><div class="t-details">Phase 1 Voting</div></div>
-                <div class="t-item done"><div class="t-date">APR 23</div><div class="t-details">Phase 2 Voting</div></div>
-                <div class="t-item active"><div class="t-date">MAY 04</div><div class="t-details">Result Counting</div></div>
-            `;
-        } else if (state === 'karnataka') {
-            html = `
-                <div class="t-item done"><div class="t-date">APR 09</div><div class="t-details">State Voting Day</div></div>
-                <div class="t-item active"><div class="t-date">MAY 04</div><div class="t-details">Results Declared</div></div>
-            `;
-        } else if (state === 'tamil_nadu') {
-            html = `
-                <div class="t-item done"><div class="t-date">APR 23</div><div class="t-details">State Voting Day</div></div>
-                <div class="t-item active"><div class="t-date">MAY 04</div><div class="t-details">Results Declared</div></div>
-            `;
-        } else if (state === 'maharashtra') {
-            html = `
-                <div class="t-item done"><div class="t-date">APR 09</div><div class="t-details">Phase 1 (Vidarbha)</div></div>
-                <div class="t-item done"><div class="t-date">APR 23</div><div class="t-details">Phase 2 (Mumbai)</div></div>
-                <div class="t-item active"><div class="t-date">MAY 04</div><div class="t-details">Results Declared</div></div>
-            `;
-        }
-        
-        container.style.opacity = 0;
-        setTimeout(() => {
-            container.innerHTML = html;
-            container.style.opacity = 1;
-        }, 200);
-    },
+const chatWindow = document.getElementById('chat-window');
+const userInput = document.getElementById('user-input');
+const sendBtn = document.getElementById('send-btn');
 
-    // --- 2. Smart Polling Locator (Mock Civic API) ---
-    findPollingPlace() {
-        const address = document.getElementById('address-input').value.trim();
-        const resultDiv = document.getElementById('locator-result');
-        
-        if (!address) {
-            resultDiv.innerHTML = "<p style='color:#ff3333;'>Error: Input required.</p>";
-            resultDiv.classList.remove('hidden');
-            return;
-        }
+async function sendMessage() {
+    const text = userInput.value.trim();
+    if (!text) return;
 
-        resultDiv.innerHTML = "<p style='color:var(--text-secondary);'>Connecting to Civic API...</p>";
-        resultDiv.classList.remove('hidden');
+    appendMessage(text, 'user-msg');
+    userInput.value = '';
 
-        // Array of realistic polling locations
-        const locations = [
-            "Govt. Higher Secondary School",
-            "St. Joseph's High School, Main Hall",
-            "Community Welfare Center",
-            "Zilla Parishad Primary School",
-            "Municipal Corporation Building",
-            "Public Library, North Wing",
-            "Kendriya Vidyalaya, Block B",
-            "Town Hall Community Center"
-        ];
-
-        // Generate a pseudo-random but consistent index based on the address string
-        let hash = 0;
-        for (let i = 0; i < address.length; i++) {
-            hash = address.charCodeAt(i) + ((hash << 5) - hash);
-        }
-        const index = Math.abs(hash) % locations.length;
-        const selectedLocation = locations[index];
-
-        setTimeout(() => {
-            resultDiv.innerHTML = `
-                <h4>📍 Location Resolved</h4>
-                <p>${selectedLocation}, ${address}</p>
-                <p style="color:var(--text-secondary); font-size:0.8rem; margin-top:8px;">Hours: 07:00 - 18:00 | Wheelchair Accessible</p>
-            `;
-        }, 800);
-    },
-
-    // --- 3. Secure & Persistent Voting Journey ---
-    loadJourney() {
-        for (let i = 1; i <= 4; i++) {
-            if (localStorage.getItem('step-' + i) === 'true') {
-                document.getElementById('step-' + i).classList.add('completed');
-            }
-        }
-    },
-
-    toggleStep(stepNum) {
-        const stepEl = document.getElementById('step-' + stepNum);
-        if (stepEl.classList.contains('completed')) {
-            stepEl.classList.remove('completed');
-            localStorage.setItem('step-' + stepNum, 'false');
-        } else {
-            stepEl.classList.add('completed');
-            localStorage.setItem('step-' + stepNum, 'true');
-            
-            // Open official government links when marking as complete
-            if (stepNum === 1) {
-                window.open('https://electoralsearch.eci.gov.in/', '_blank');
-            } else if (stepNum === 2) {
-                window.open('https://voters.eci.gov.in/', '_blank');
-            } else if (stepNum === 3) {
-                window.open('https://eci.gov.in/voter/', '_blank');
-            } else if (stepNum === 4) {
-                window.open('https://results.eci.gov.in/', '_blank');
-            }
-        }
-    },
-
-    // --- AI Chat Logic ---
-    handleKeyPress(event) {
-        if (event.key === 'Enter') this.sendMessage();
-    },
-
-    async sendMessage() {
-        const inputField = document.getElementById('user-input');
-        const userText = inputField.value.trim();
-        if (userText === "") return;
-
-        const display = document.getElementById('chat-display');
-
-        // Add user message
-        const userMsg = document.createElement('div');
-        userMsg.className = "msg user-msg";
-        userMsg.textContent = userText;
-        display.appendChild(userMsg);
-        
-        inputField.value = "";
-        display.scrollTop = display.scrollHeight;
-
-        // Add typing indicator
-        const typingId = 'typing-' + Date.now();
-        const typingEl = document.createElement('div');
-        typingEl.id = typingId;
-        typingEl.className = "msg bot-msg";
-        typingEl.textContent = "...";
-        display.appendChild(typingEl);
-        display.scrollTop = display.scrollHeight;
-
-        try {
-            const response = await fetch(this.apiUrl, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({ message: userText })
-            });
-
-            if (!response.ok) throw new Error("API Error");
-            const data = await response.json();
-            
-            document.getElementById(typingId).remove();
-            this.addBotMessage(data.response);
-        } catch (error) {
-            document.getElementById(typingId).remove();
-            this.addBotMessage("Connection to Gemini API failed. Retrying...");
-        }
-    },
-
-    addBotMessage(text) {
-        const display = document.getElementById('chat-display');
-        const botMsg = document.createElement('div');
-        botMsg.className = "msg bot-msg";
-        botMsg.innerHTML = this.escapeHTML(text).replace(/\n/g, '<br>');
-        display.appendChild(botMsg);
-        display.scrollTop = display.scrollHeight;
-    },
-
-    escapeHTML(str) {
-        return str.replace(/[&<>'"]/g, tag => ({
-            '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
-        }[tag]));
+    try {
+        const response = await fetch('/api/ai/chat', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ message: text })
+        });
+        const data = await response.json();
+        typeEffect(data.response, 'bot-msg');
+    } catch (err) {
+        appendMessage("Connection lost. Retrying...", 'bot-msg');
     }
-};
+}
 
-document.addEventListener('DOMContentLoaded', () => {
-    app.loadJourney();
-});
+function appendMessage(text, type) {
+    const msg = document.createElement('div');
+    msg.className = `msg ${type}`;
+    msg.innerText = text;
+    chatWindow.appendChild(msg);
+    chatWindow.scrollTop = chatWindow.scrollHeight;
+}
+
+function typeEffect(text, type) {
+    const msg = document.createElement('div');
+    msg.className = `msg ${type}`;
+    chatWindow.appendChild(msg);
+
+    let i = 0;
+    const interval = setInterval(() => {
+        msg.innerText += text[i];
+        i++;
+        if (i >= text.length) clearInterval(interval);
+        chatWindow.scrollTop = chatWindow.scrollHeight;
+    }, 15);
+}
+
+sendBtn.addEventListener('click', sendMessage);
