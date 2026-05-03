@@ -1,39 +1,33 @@
 const app = {
-    // Backend URL. Uses relative path to work seamlessly on Railway.
     apiUrl: '/api/chat',
     
     // --- 1. Personalized Timelines ---
     updateTimeline() {
         const state = document.getElementById('state-selector').value;
         const container = document.getElementById('timeline-container');
-        const desc = document.getElementById('timeline-desc');
         
         let html = '';
         if (state === 'national') {
-            desc.innerText = "Tracking the 2026 Lok Sabha Phases.";
             html = `
-                <div class="v-item done"><div class="v-dot"></div><div class="v-content"><h4>Apr 09</h4><p>Phase 1</p></div></div>
-                <div class="v-item done"><div class="v-dot"></div><div class="v-content"><h4>Apr 23</h4><p>Phase 2</p></div></div>
-                <div class="v-item active"><div class="v-dot"></div><div class="v-content"><h4>May 04</h4><p>Counting</p></div></div>
+                <div class="t-item done"><div class="t-date">APR 09</div><div class="t-details">Phase 1 Voting</div></div>
+                <div class="t-item done"><div class="t-date">APR 23</div><div class="t-details">Phase 2 Voting</div></div>
+                <div class="t-item active"><div class="t-date">MAY 04</div><div class="t-details">Result Counting</div></div>
             `;
         } else if (state === 'karnataka') {
-            desc.innerText = "Karnataka Election Schedule.";
             html = `
-                <div class="v-item done"><div class="v-dot"></div><div class="v-content"><h4>Apr 09</h4><p>Voting Day</p></div></div>
-                <div class="v-item active"><div class="v-dot"></div><div class="v-content"><h4>May 04</h4><p>Results</p></div></div>
+                <div class="t-item done"><div class="t-date">APR 09</div><div class="t-details">State Voting Day</div></div>
+                <div class="t-item active"><div class="t-date">MAY 04</div><div class="t-details">Results Declared</div></div>
             `;
         } else if (state === 'tamil_nadu') {
-            desc.innerText = "Tamil Nadu Election Schedule.";
             html = `
-                <div class="v-item done"><div class="v-dot"></div><div class="v-content"><h4>Apr 23</h4><p>Voting Day</p></div></div>
-                <div class="v-item active"><div class="v-dot"></div><div class="v-content"><h4>May 04</h4><p>Results</p></div></div>
+                <div class="t-item done"><div class="t-date">APR 23</div><div class="t-details">State Voting Day</div></div>
+                <div class="t-item active"><div class="t-date">MAY 04</div><div class="t-details">Results Declared</div></div>
             `;
         } else if (state === 'maharashtra') {
-            desc.innerText = "Maharashtra Election Schedule.";
             html = `
-                <div class="v-item done"><div class="v-dot"></div><div class="v-content"><h4>Apr 09</h4><p>Phase 1</p></div></div>
-                <div class="v-item done"><div class="v-dot"></div><div class="v-content"><h4>Apr 23</h4><p>Phase 2</p></div></div>
-                <div class="v-item active"><div class="v-dot"></div><div class="v-content"><h4>May 04</h4><p>Results</p></div></div>
+                <div class="t-item done"><div class="t-date">APR 09</div><div class="t-details">Phase 1 (Vidarbha)</div></div>
+                <div class="t-item done"><div class="t-date">APR 23</div><div class="t-details">Phase 2 (Mumbai)</div></div>
+                <div class="t-item active"><div class="t-date">MAY 04</div><div class="t-details">Results Declared</div></div>
             `;
         }
         
@@ -50,30 +44,27 @@ const app = {
         const resultDiv = document.getElementById('locator-result');
         
         if (!address) {
-            resultDiv.innerHTML = "<p style='color:#ef4444;'>Please enter a valid Zip Code or City.</p>";
+            resultDiv.innerHTML = "<p style='color:#ff3333;'>Error: Input required.</p>";
             resultDiv.classList.remove('hidden');
             return;
         }
 
-        resultDiv.innerHTML = "<p>Searching Google Civic API...</p>";
+        resultDiv.innerHTML = "<p style='color:var(--text-secondary);'>Connecting to Civic API...</p>";
         resultDiv.classList.remove('hidden');
 
-        // Simulate API latency
         setTimeout(() => {
             resultDiv.innerHTML = `
-                <h4>📍 Polling Location Found</h4>
-                <p><strong>Location:</strong> Government Primary School, ${address}</p>
-                <p><strong>Hours:</strong> 7:00 AM - 6:00 PM</p>
-                <p><strong>Accessibility:</strong> Wheelchair Accessible</p>
+                <h4>📍 Location Resolved</h4>
+                <p>Govt. Higher Secondary School, ${address}</p>
+                <p style="color:var(--text-secondary); font-size:0.8rem; margin-top:8px;">Hours: 07:00 - 18:00 | Wheelchair Accessible</p>
             `;
-        }, 1200);
+        }, 800);
     },
 
     // --- 3. Secure & Persistent Voting Journey ---
     loadJourney() {
         for (let i = 1; i <= 4; i++) {
-            const isCompleted = localStorage.getItem('step-' + i) === 'true';
-            if (isCompleted) {
+            if (localStorage.getItem('step-' + i) === 'true') {
                 document.getElementById('step-' + i).classList.add('completed');
             }
         }
@@ -81,20 +72,13 @@ const app = {
 
     toggleStep(stepNum) {
         const stepEl = document.getElementById('step-' + stepNum);
-        const isCurrentlyCompleted = stepEl.classList.contains('completed');
-        
-        if (isCurrentlyCompleted) {
+        if (stepEl.classList.contains('completed')) {
             stepEl.classList.remove('completed');
             localStorage.setItem('step-' + stepNum, 'false');
         } else {
             stepEl.classList.add('completed');
             localStorage.setItem('step-' + stepNum, 'true');
         }
-
-        // Show quick "Saved" flash
-        const saveStatus = document.getElementById('save-status');
-        saveStatus.style.opacity = 1;
-        setTimeout(() => saveStatus.style.opacity = 0.5, 1500);
     },
 
     // --- AI Chat Logic ---
@@ -107,9 +91,7 @@ const app = {
     },
 
     handleKeyPress(event) {
-        if (event.key === 'Enter') {
-            this.sendMessage();
-        }
+        if (event.key === 'Enter') this.sendMessage();
     },
 
     async sendMessage() {
@@ -119,25 +101,23 @@ const app = {
 
         const display = document.getElementById('chat-display');
 
+        // Add user message
         const userMsg = document.createElement('div');
-        userMsg.className = "message user-msg";
-        userMsg.innerHTML = `<div class="msg-content">${this.escapeHTML(userText)}</div>`;
+        userMsg.className = "msg user-msg";
+        userMsg.textContent = userText;
         display.appendChild(userMsg);
         
         inputField.value = "";
-        this.scrollToBottom();
+        display.scrollTop = display.scrollHeight;
 
+        // Add typing indicator
         const typingId = 'typing-' + Date.now();
-        const typingIndicator = document.createElement('div');
-        typingIndicator.id = typingId;
-        typingIndicator.className = "typing-indicator";
-        typingIndicator.innerHTML = `
-            <div class="typing-dot"></div>
-            <div class="typing-dot"></div>
-            <div class="typing-dot"></div>
-        `;
-        display.appendChild(typingIndicator);
-        this.scrollToBottom();
+        const typingEl = document.createElement('div');
+        typingEl.id = typingId;
+        typingEl.className = "msg bot-msg";
+        typingEl.textContent = "...";
+        display.appendChild(typingEl);
+        display.scrollTop = display.scrollHeight;
 
         try {
             const response = await fetch(this.apiUrl, {
@@ -146,50 +126,33 @@ const app = {
                 body: JSON.stringify({ message: userText })
             });
 
-            if (!response.ok) throw new Error("Network response was not ok");
+            if (!response.ok) throw new Error("API Error");
             const data = await response.json();
             
             document.getElementById(typingId).remove();
             this.addBotMessage(data.response);
         } catch (error) {
-            console.error("Error communicating with AI backend:", error);
-            const typingEl = document.getElementById(typingId);
-            if (typingEl) typingEl.remove();
-            this.addBotMessage("I'm currently offline or unable to reach the election servers. Please try again later or visit eci.gov.in directly.");
+            document.getElementById(typingId).remove();
+            this.addBotMessage("Connection to Gemini API failed. Retrying...");
         }
     },
 
     addBotMessage(text) {
         const display = document.getElementById('chat-display');
         const botMsg = document.createElement('div');
-        botMsg.className = "message bot-msg";
-        const formattedText = this.escapeHTML(text).replace(/\n/g, '<br>');
-        botMsg.innerHTML = `<div class="msg-content">${formattedText}</div>`;
+        botMsg.className = "msg bot-msg";
+        botMsg.innerHTML = this.escapeHTML(text).replace(/\n/g, '<br>');
         display.appendChild(botMsg);
-        this.scrollToBottom();
-    },
-
-    scrollToBottom() {
-        const display = document.getElementById('chat-display');
         display.scrollTop = display.scrollHeight;
     },
 
     escapeHTML(str) {
-        return str.replace(/[&<>'"]/g, 
-            tag => ({
-                '&': '&amp;',
-                '<': '&lt;',
-                '>': '&gt;',
-                "'": '&#39;',
-                '"': '&quot;'
-            }[tag])
-        );
+        return str.replace(/[&<>'"]/g, tag => ({
+            '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+        }[tag]));
     }
 };
 
-// Initialize app when DOM loads
 document.addEventListener('DOMContentLoaded', () => {
     app.loadJourney();
-    // Enable transition on timeline container
-    document.getElementById('timeline-container').style.transition = 'opacity 0.2s ease-in-out';
 });
