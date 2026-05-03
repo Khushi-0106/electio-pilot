@@ -1,7 +1,6 @@
 package com.electiopilot.controller;
 
-import org.springframework.ai.chat.ChatClient;
-import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.web.bind.annotation.*;
 import java.util.Map;
 
@@ -12,26 +11,29 @@ public class AIController {
 
     private final ChatClient chatClient;
 
-    @Autowired
-    public AIController(ChatClient chatClient) {
-        this.chatClient = chatClient;
+    public AIController(ChatClient.Builder chatClientBuilder) {
+        this.chatClient = chatClientBuilder
+                .defaultSystem("Context: You are Electio-Pilot AI. " +
+                    "Guideline: Provide non-partisan, accurate information about the 2026 Indian Elections. " +
+                    "Tone: Professional and concise.")
+                .build();
     }
 
     @PostMapping("/chat")
     public Map<String, String> askGemini(@RequestBody Map<String, String> request) {
         String userMessage = request.get("message");
-        
-        // Innovation: System Instruction for non-partisan guidance
-        String systemInstruction = "Context: You are Electio-Pilot AI. " +
-            "Guideline: Provide non-partisan, accurate information about the 2026 Indian Elections. " +
-            "Tone: Professional and concise.";
+        if (userMessage == null || userMessage.trim().isEmpty()) {
+            return Map.of("response", "Please provide a valid question.");
+        }
 
         try {
-            String fullPrompt = systemInstruction + "\nUser Query: " + userMessage;
-            String aiResponse = chatClient.call(fullPrompt);
+            String aiResponse = this.chatClient.prompt()
+                    .user(userMessage)
+                    .call()
+                    .content();
             return Map.of("response", aiResponse);
         } catch (Exception e) {
-            return Map.of("response", "System recalibrating. Please check GEMINI_API_KEY.");
+            return Map.of("response", "System recalibrating. Please try again later.");
         }
     }
 }
