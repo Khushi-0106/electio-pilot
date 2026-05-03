@@ -98,6 +98,17 @@ const app = {
         } else {
             stepEl.classList.add('completed');
             localStorage.setItem('step-' + stepNum, 'true');
+            
+            // Open official government links when marking as complete
+            if (stepNum === 1) {
+                window.open('https://electoralsearch.eci.gov.in/', '_blank');
+            } else if (stepNum === 2) {
+                window.open('https://voters.eci.gov.in/', '_blank');
+            } else if (stepNum === 3) {
+                window.open('https://eci.gov.in/voter/', '_blank');
+            } else if (stepNum === 4) {
+                window.open('https://results.eci.gov.in/', '_blank');
+            }
         }
     },
 
