@@ -52,10 +52,30 @@ const app = {
         resultDiv.innerHTML = "<p style='color:var(--text-secondary);'>Connecting to Civic API...</p>";
         resultDiv.classList.remove('hidden');
 
+        // Array of realistic polling locations
+        const locations = [
+            "Govt. Higher Secondary School",
+            "St. Joseph's High School, Main Hall",
+            "Community Welfare Center",
+            "Zilla Parishad Primary School",
+            "Municipal Corporation Building",
+            "Public Library, North Wing",
+            "Kendriya Vidyalaya, Block B",
+            "Town Hall Community Center"
+        ];
+
+        // Generate a pseudo-random but consistent index based on the address string
+        let hash = 0;
+        for (let i = 0; i < address.length; i++) {
+            hash = address.charCodeAt(i) + ((hash << 5) - hash);
+        }
+        const index = Math.abs(hash) % locations.length;
+        const selectedLocation = locations[index];
+
         setTimeout(() => {
             resultDiv.innerHTML = `
                 <h4>📍 Location Resolved</h4>
-                <p>Govt. Higher Secondary School, ${address}</p>
+                <p>${selectedLocation}, ${address}</p>
                 <p style="color:var(--text-secondary); font-size:0.8rem; margin-top:8px;">Hours: 07:00 - 18:00 | Wheelchair Accessible</p>
             `;
         }, 800);
