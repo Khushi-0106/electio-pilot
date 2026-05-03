@@ -2,28 +2,48 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
 	<modelVersion>4.0.0</modelVersion>
+	
 	<parent>
 		<groupId>org.springframework.boot</groupId>
 		<artifactId>spring-boot-starter-parent</artifactId>
 		<version>3.2.2</version>
+		<relativePath/> 
 	</parent>
+
 	<groupId>com.electiopilot</groupId>
 	<artifactId>electio-pilot</artifactId>
 	<version>2.0.26</version>
+	<name>electio-pilot</name>
+	<description>AI-powered election assistant for 2026</description>
+
+	<properties>
+		<java.version>21</java.version>
+		<spring-ai.version>0.8.1</spring-ai.version>
+	</properties>
 
 	<dependencies>
+		<!-- Core Web Starter -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+
+		<!-- Spring AI for Gemini/OpenAI Integration -->
 		<dependency>
 			<groupId>org.springframework.ai</groupId>
 			<artifactId>spring-ai-google-openai-spring-boot-starter</artifactId>
-			<version>0.8.1</version>
+			<version>${spring-ai.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
 		</dependency>
 	</dependencies>
 
 	<repositories>
+		<!-- Essential for downloading Spring AI artifacts -->
 		<repository>
 			<id>spring-milestones</id>
 			<name>Spring Milestones</name>
