@@ -102,14 +102,6 @@ const app = {
     },
 
     // --- AI Chat Logic ---
-    toggleChat() {
-        const chat = document.getElementById('ai-chat-overlay');
-        chat.classList.toggle('hidden');
-        if (!chat.classList.contains('hidden')) {
-            document.getElementById('user-input').focus();
-        }
-    },
-
     handleKeyPress(event) {
         if (event.key === 'Enter') this.sendMessage();
     },

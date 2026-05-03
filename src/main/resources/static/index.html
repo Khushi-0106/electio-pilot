@@ -8,8 +8,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <div class="ambient-glow"></div>
-
     <nav class="navbar">
         <div class="nav-brand">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
@@ -21,19 +19,16 @@
         </div>
     </nav>
 
-    <main class="main-content">
-        <!-- Hero -->
+    <main class="container">
+        <!-- Hero (Left Aligned) -->
         <section class="section hero">
             <div class="hero-label">VER 2.0.26</div>
             <h1 class="hero-title">Navigate the <br><span class="text-highlight">2026 Elections.</span></h1>
             <p class="hero-desc">An advanced, non-partisan AI guide for the Election Commission of India guidelines, polling locations, and voting eligibility.</p>
-            <div class="hero-actions">
-                <button class="btn btn-primary" onclick="app.toggleChat()">Initialize AI Assistant</button>
-            </div>
         </section>
 
         <!-- Journey (Cards) -->
-        <section class="section">
+        <section class="section center-section">
             <div class="section-header">
                 <h2>Voting Protocol</h2>
                 <p>Secure local state tracking.</p>
@@ -67,7 +62,7 @@
         </section>
 
         <!-- Timeline & Locator Split -->
-        <section class="section split-section">
+        <section class="section split-section center-section">
             
             <!-- Timeline Side -->
             <div class="split-pane">
@@ -108,41 +103,43 @@
                     <div class="input-wrapper">
                         <svg class="input-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.3-4.3"/></svg>
                         <input type="text" id="address-input" placeholder="Enter PIN code or city..." class="sleek-input">
-                        <button class="btn btn-small" onclick="app.findPollingPlace()">Search</button>
+                        <button class="btn btn-primary btn-small" onclick="app.findPollingPlace()">Search</button>
                     </div>
                     <div id="locator-result" class="result-box hidden"></div>
                 </div>
             </div>
 
         </section>
-    </main>
 
-    <!-- AI Chat Overlay -->
-    <div id="ai-chat-overlay" class="chat-overlay hidden">
-        <div class="chat-window">
-            <div class="chat-header">
-                <div class="chat-identity">
-                    <span class="chat-icon">🤖</span>
-                    <div>
-                        <div class="chat-name">Electio-Pilot Core</div>
-                        <div class="chat-status">Connected to Gemini API</div>
+        <!-- Embedded AI Chatbot (Bottom Section) -->
+        <section class="section center-section">
+            <div class="section-header">
+                <h2>Electio-Pilot AI</h2>
+                <p>Non-partisan guidance powered by Google Gemini.</p>
+            </div>
+            
+            <div class="chat-embedded">
+                <div class="chat-header">
+                    <div class="chat-identity">
+                        <span class="chat-icon">🤖</span>
+                        <div>
+                            <div class="chat-name">System Assistant</div>
+                            <div class="chat-status">Online & Ready</div>
+                        </div>
                     </div>
                 </div>
-                <button class="chat-close" onclick="app.toggleChat()">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 6L6 18M6 6l12 12"/></svg>
-                </button>
+                <div class="chat-messages" id="chat-display">
+                    <div class="msg system">Session initialized. How can I assist with the 2026 elections today?</div>
+                </div>
+                <div class="chat-input-box">
+                    <input type="text" id="user-input" placeholder="Ask about voter ID, dates, or eligibility..." onkeypress="app.handleKeyPress(event)">
+                    <button class="chat-send" onclick="app.sendMessage()">
+                        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
+                    </button>
+                </div>
             </div>
-            <div class="chat-messages" id="chat-display">
-                <div class="msg system">Session initialized. How can I assist with the 2026 elections?</div>
-            </div>
-            <div class="chat-input-box">
-                <input type="text" id="user-input" placeholder="Query the AI..." onkeypress="app.handleKeyPress(event)">
-                <button class="chat-send" onclick="app.sendMessage()">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 2L11 13M22 2l-7 20-4-9-9-4 20-7z"/></svg>
-                </button>
-            </div>
-        </div>
-    </div>
+        </section>
+    </main>
 
     <script src="scripts/main.js"></script>
 </body>
